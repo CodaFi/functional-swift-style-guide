@@ -8,7 +8,7 @@ Functional Swift is a proper subset of Swift and its features that encourages im
 
 For, do, and while loops are strictly forbidden.  
 
-Assignment is restricted to monadic extraction (`<-`) in `do_` blocks and let statements. 
+Assignment is restricted to monadic extraction (prefix `!`) in `do_` blocks and let statements. 
 
 ```
 public func foldl1<A>(f: A -> A -> A)(xs0: [A]) -> A {
@@ -66,24 +66,24 @@ Swift code shall use tabs.  The only exception is diagrams in comments, which mu
 
 Function names should describe exactly what a function does, yet still be concise.  Abbreviations for common words (l for left, m for monad, etc.) are encouraged, as long as they are used consistently.  
 
-A function should always be written in curried form.  Higher order parameters of arity 3 mean there should be a separate overloading for that function to allows operators (which are uncurried by default) to be passed in.
+A function should always be written in curried form and without argument labels if possible.  Higher order parameters of arity 3 mean there should be a separate overloading for that function to allows operators (which are uncurried by default) to be passed in.  Strive for point-free code.
 
 ```
-public func foldr<A, B>(k: A -> B -> B)(z: B)(lst: [A]) -> B {
+public func foldr<A, B>(k: A -> B -> B) -> B -> [A] -> B {
 	switch lst.destruct() {
 		case .Empty:
 			return z
 		case .Destructure(let x, let xs):
-			return k(x)(foldr(k)(z: z)(lst: xs))
+			return k(x)(foldr(k)(z)(xs))
 	}
 }
 
-public func foldr<A, B>(k: (A, B) -> B)(z: B)(lst: [A]) -> B {
+public func foldr<A, B>(k: (A, B) -> B) -> B -> [A] -> B {
 	switch lst.destruct() {
 		case .Empty:
 			return z
 		case .Destructure(let x, let xs):
-			return k(x, foldr(k)(z: z)(lst: xs))
+			return k(x, foldr(k)(z)(xs))
 	}
 }
 ```
