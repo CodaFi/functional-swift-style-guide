@@ -4,7 +4,7 @@
 
 Functional Swift is a proper subset of Swift and its features that encourages [immutability](http://en.wikipedia.org/wiki/Immutable_object), [recursion](http://en.wikipedia.org/wiki/Recursion#Recursion_in_computer_science), and [higher types](http://en.wikipedia.org/wiki/Kind_(type_theory)) instead of mutability, loops, and subtyping respectively.  The end goal is to approach the cleanliness and readability of Declarative Programming proper while still maintaining the simplicity and semantics of Swift.
 
-*Note* This document is not a sample of best practices, nor will adhering to it necessarily the most efficient or practical code.  It merely serves as an exploration of pure declarative programming in an imperative language.
+*Note* This document is not a sample of best practices, nor will adhering to it necessarily produce the most efficient or practical code.  It merely serves as an exploration of pure declarative programming in an imperative language.
 
 ##Restrictions
 
@@ -25,7 +25,7 @@ public func foldl<A, B>(f: (B, A) -> B) -> B -> [A] -> B {
 }
 ```
 
-Assignment is restricted to `let` bindings and [monadic extraction]() (prefix `!`) in `do_` blocks. 
+Assignment is restricted to `let` bindings and [monadic extraction](http://book.realworldhaskell.org/read/monads.html) (prefix `!`, reappropriated from [strictness bangs](https://www.haskell.org/haskellwiki/Performance/Strictness)) in `do_` blocks. 
 
 **For Example**
 
@@ -284,6 +284,5 @@ public func until<A>(p : A -> Bool)(f : A -> A)(x : A) -> A {
 Generic typealiases are forbidden by the language, so typealiases not required to implement protocols are forbidden.  Functions should never expose typealias'd types, and should instead expose the fully expanded type to the user.  
 
 Non-total functions are allowed, but discouraged and should always be documented as such.  Generally, prefer types to enforce invariants.
-
 
 
